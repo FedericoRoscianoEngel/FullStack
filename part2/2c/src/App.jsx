@@ -3,7 +3,7 @@ import PersonalForm from './components/PersonalForm'
 import List from './components/List'
 import Filter from './components/Filter'
 import { useEffect } from 'react'
-import axios from 'axios'
+import PersonsService from './services/PersonsServices'
 
 const App = () => {
 
@@ -11,13 +11,12 @@ const App = () => {
 
   useEffect(() => {
     console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-      })
+    PersonsService.getAll().then(initialPersons => {
+      setPersons(initialPersons)
+    })
   }, [])
+
+
   console.log('render', persons.length, 'persons')
   const [filter, setFilter] = useState('')
 
@@ -29,7 +28,36 @@ const App = () => {
       )
 
   const addPerson = (person) => {
-    setPersons(persons.concat(person))
+    PersonsService
+      .create(person)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+      })
+
+
+  }
+
+  const deletePerson = (id) => {
+    PersonsService.remove(id)
+      .then(() => {
+        setPersons(prev =>
+          prev.filter(p => p.id !== id)
+        )
+      })
+  }
+
+  const updatePerson = (id, updatedPersonMod) => {
+    PersonsService
+      .update(id, updatedPersonMod)
+      .then(returnedPerson => {
+        setPersons(
+          persons.map(person =>
+            person.id !== id
+              ? person
+              : returnedPerson
+          )
+        )
+      })
   }
 
   return (
@@ -44,9 +72,13 @@ const App = () => {
 
       <PersonalForm
         addPerson={addPerson}
+        updatePerson={updatePerson}
         persons={persons} />
 
-      <List persons={personsToShow} />
+      <List
+        persons={personsToShow}
+        deletePerson={deletePerson}
+      />
 
     </div>
   )

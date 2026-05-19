@@ -1,5 +1,6 @@
 import { useState } from 'react'
-const PersonalForm = ({ addPerson, persons }) => {
+
+const PersonalForm = ({ addPerson, persons, updatePerson }) => {
 
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
@@ -8,21 +9,39 @@ const PersonalForm = ({ addPerson, persons }) => {
     const addName = (event) => {
         event.preventDefault()
 
-        const existe = persons.some(person => person.name === newName);
+        const existingPerson = persons.find(
+            person => person.name === newName
+        )
 
-        if (existe) {
+        if (existingPerson) {
 
-            alert(`${newName} ya está en la lista`);
-            return;
+            if (existingPerson.number === newNumber) {
+                alert(`${newName} ya existe en la lista`)
+                return
+            }
+
+            // Nombre igual pero número distinto
+            const confirmUpdate = window.confirm(
+                `${newName} ya existe. ¿Desea reemplazar el número antiguo por ${newNumber}?`
+            )
+
+            if (confirmUpdate) {
+                const updatedPersonMod = {
+                    ...existingPerson,
+                    number: newNumber
+                }
+                updatePerson(existingPerson.id, updatedPersonMod)
+            }
+
+
+
 
         } else {
 
-            event.preventDefault()
             const personObject = {
                 name: newName,
                 number: newNumber,
                 important: Math.random() < 0.5,
-                id: persons.length + 1,
             }
 
             addPerson(personObject)
