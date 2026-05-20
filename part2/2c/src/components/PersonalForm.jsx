@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const PersonalForm = ({ addPerson, persons, updatePerson }) => {
+const PersonalForm = ({ addPerson, persons, updatePerson, setMessage }) => {
 
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
@@ -16,8 +16,17 @@ const PersonalForm = ({ addPerson, persons, updatePerson }) => {
         if (existingPerson) {
 
             if (existingPerson.number === newNumber) {
-                alert(`${newName} ya existe en la lista`)
+                /*alert(`${newName} ya existe en la lista`)
+                return*/
+                setMessage({
+                    text: `Person ${existingPerson.name} exist in the server`,
+                    type: 'error'
+                })
+                setTimeout(() => {
+                    setMessage(null)
+                }, 5000)
                 return
+
             }
 
             // Nombre igual pero número distinto
@@ -31,6 +40,15 @@ const PersonalForm = ({ addPerson, persons, updatePerson }) => {
                     number: newNumber
                 }
                 updatePerson(existingPerson.id, updatedPersonMod)
+
+                setMessage({
+                    text: `Person ${existingPerson.name} updated`,
+                    type: 'success'
+                })
+                setTimeout(() => {
+                    setMessage(null)
+                }, 5000)
+                return
             }
 
 
@@ -47,6 +65,15 @@ const PersonalForm = ({ addPerson, persons, updatePerson }) => {
             addPerson(personObject)
             setNewName('')
             setNewNumber('')
+
+            setMessage({
+                text: `Person ${existingPerson.name} added`,
+                type: 'success'
+            })
+            setTimeout(() => {
+                setMessage(null)
+            }, 5000)
+            return
 
         }
 

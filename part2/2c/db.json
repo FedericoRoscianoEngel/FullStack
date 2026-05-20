@@ -6,16 +6,28 @@
       "id": "2"
     },
     {
-      "name": "jorge",
-      "number": "1111",
-      "important": true,
-      "id": "ydzZL7UyCbY"
-    },
-    {
       "name": "pepe",
-      "number": "12345",
+      "number": "123456",
       "important": false,
       "id": "4K8xdmxUd2k"
+    },
+    {
+      "name": "dsad",
+      "number": "22",
+      "important": true,
+      "id": "_NC_yivS2Qw"
+    },
+    {
+      "name": "123",
+      "number": "2",
+      "important": true,
+      "id": "L8sWpMUFMsY"
+    },
+    {
+      "name": "23131",
+      "number": "11",
+      "important": true,
+      "id": "KpLLXuUwgg4"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
